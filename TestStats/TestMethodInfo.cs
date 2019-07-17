@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace TestStats
 {
@@ -24,18 +23,32 @@ namespace TestStats
                         ? authorAttrData.ToList().FirstOrDefault().ConstructorArguments.FirstOrDefault().Value.ToString()
                         : "NoName"; ;
             IgnoreValues = ignoreAttrData.Any()
-                        ? ignoreAttrData.ToList().FirstOrDefault().ConstructorArguments.Where(val => val.ArgumentType == typeof(String))
-                            .FirstOrDefault().Value.ToString().Split(',')
-                            .Select(val => val.Trim()).ToArray()
-                        : default;
+                        ? ignoreAttrData.ToList().FirstOrDefault().ConstructorArguments
+                            .FirstOrDefault(val => val.ArgumentType == typeof(String)).Value.ToString().Split(',')
+                            .Select(val => val.Trim()).ToList()
+                        : new List<string>();
             TestCasesCount = attrDataList.Any(val => val.AttributeType == typeof(TestCaseAttribute))
                 ? attrDataList.Count(val => val.AttributeType == typeof(TestCaseAttribute))
                 : 1;
         }
+
         public string TestMethodName { get; set; }
         public string Author { get; set; }
         public int TestCasesCount { get; set; }
-        public string[] IgnoreValues { get; set; }
+        public List<string> IgnoreValues { get; set; }
+
+        public override string ToString()
+        {
+            StringBuilder printTestMethodInfo = new StringBuilder();
+            printTestMethodInfo.AppendLine($"Test method name: {TestMethodName}");
+            printTestMethodInfo.AppendLine($"Author of the test: {Author}");
+            printTestMethodInfo.AppendLine($"Q-ty of test cases: {TestCasesCount}");
+            if (IgnoreValues.Any())
+            {
+                printTestMethodInfo.AppendLine($"Ignored by: {String.Join(", ", IgnoreValues)}");
+            }
+            return printTestMethodInfo.ToString();
+        }
     }
 }
 
