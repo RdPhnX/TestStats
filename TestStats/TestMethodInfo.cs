@@ -44,6 +44,14 @@ namespace TestStats
         public string Author { get; set; }
         public int TestCasesCount { get; set; }
         public string[] IgnoreValues { get; set; }
+
+
+
+
+
+
+
+
     }
 }
 
