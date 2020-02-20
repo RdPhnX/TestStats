@@ -32,6 +32,14 @@ namespace TestStats
                 ? attrDataList.Count(val => val.AttributeType == typeof(TestCaseAttribute))
                 : 1;
         }
+
+
+
+
+
+
+
+
         public string TestMethodName { get; set; }
         public string Author { get; set; }
         public int TestCasesCount { get; set; }
